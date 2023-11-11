@@ -1,3 +1,4 @@
+import AddToCart from '@/components/products/AddToCart'
 import data from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -60,11 +61,13 @@ export default function ProductDetails({
                   {product.countInStock > 0 ? 'In stock' : 'Unavailable'}
                 </div>
               </div>
-              <div className="card-actions justify-center">
-                <button className="btn btn-primary w-full" type="button">
-                  Add to cart
-                </button>
-              </div>
+              {product.countInStock !== 0 && (
+                <div className="card-actions justify-center">
+                  <AddToCart
+                    item={{ ...product, qty: 0, color: '', size: '' }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
