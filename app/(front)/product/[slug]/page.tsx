@@ -1,5 +1,5 @@
 import AddToCart from '@/components/products/AddToCart'
-import data from '@/lib/data'
+import { convertDocToObj } from '@/lib/utils'
 import productService from '@/lib/services/productService'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -80,7 +80,12 @@ export default async function ProductDetails({
               {product.countInStock !== 0 && (
                 <div className="card-actions justify-center">
                   <AddToCart
-                    item={{ ...product, qty: 0, color: '', size: '' }}
+                    item={{
+                      ...convertDocToObj(product),
+                      qty: 0,
+                      color: '',
+                      size: '',
+                    }}
                   />
                 </div>
               )}
