@@ -97,6 +97,11 @@ export default function useCartService() {
         paymentMethod,
       })
     },
+    clear: () => {
+      cartStore.setState({
+        items: [],
+      })
+    },
   }
 }
 
