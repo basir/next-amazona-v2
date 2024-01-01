@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 const Menu = () => {
-  const { items } = useCartService()
+  const { items, init } = useCartService()
   const [mounted, setMounted] = useState(false)
   useEffect(() => {
     setMounted(true)
@@ -14,6 +14,7 @@ const Menu = () => {
 
   const signoutHandler = () => {
     signOut({ callbackUrl: '/signin' })
+    init()
   }
 
   const { data: session } = useSession()
@@ -55,6 +56,9 @@ const Menu = () => {
                   tabIndex={0}
                   className="menu dropdown-content z-[1] p-2 shadow bg-base-300 rounded-box w-52 "
                 >
+                  <li>
+                    <Link href="/order-history">Order history </Link>
+                  </li>
                   <li>
                     <button type="button" onClick={signoutHandler}>
                       Sign out
