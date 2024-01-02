@@ -15,4 +15,4 @@ export const GET = auth(async (...request: any) => {
   await dbConnect()
   const order = await OrderModel.findById(params.id)
   return Response.json(order)
-})
+}) as any
