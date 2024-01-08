@@ -40,7 +40,7 @@ export const options = {
 }
 
 const Dashboard = () => {
-  const { data: summary, error } = useSWR(`/api/orders/summary`)
+  const { data: summary, error } = useSWR(`/api/admin/orders/summary`)
 
   if (error) return error.message
   if (!summary) return 'Loading...'
