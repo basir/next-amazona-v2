@@ -88,6 +88,38 @@ export default function ProductEditForm({ productId }: { productId: string }) {
     </div>
   )
 
+  const uploadHandler = async (e: any) => {
+    const toastId = toast.loading('Uploading image...')
+    try {
+      const resSign = await fetch('/api/cloudinary-sign', {
+        method: 'POST',
+      })
+      const { signature, timestamp } = await resSign.json()
+      const file = e.target.files[0]
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('signature', signature)
+      formData.append('timestamp', timestamp)
+      formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY!)
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      )
+      const data = await res.json()
+      setValue('image', data.secure_url)
+      toast.success('File uploaded successfully', {
+        id: toastId,
+      })
+    } catch (err: any) {
+      toast.error(err.message, {
+        id: toastId,
+      })
+    }
+  }
+
   return (
     <div>
       <h1 className="text-2xl py-4">Edit Product {formatId(productId)}</h1>
@@ -96,6 +128,19 @@ export default function ProductEditForm({ productId }: { productId: string }) {
           <FormInput name="Name" id="name" required />
           <FormInput name="Slug" id="slug" required />
           <FormInput name="Image" id="image" required />
+          <div className="md:flex mb-6">
+            <label className="label md:w-1/5" htmlFor="imageFile">
+              Upload Image
+            </label>
+            <div className="md:w-4/5">
+              <input
+                type="file"
+                className="file-input w-full max-w-md"
+                id="imageFile"
+                onChange={uploadHandler}
+              />
+            </div>
+          </div>
           <FormInput name="Price" id="price" required />
           <FormInput name="Category" id="category" required />
           <FormInput name="Brand" id="brand" required />
