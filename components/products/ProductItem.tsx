@@ -3,6 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Rating } from './Rating'
+import AddToCart from './AddToCart'
+import { convertDocToObj } from '@/lib/utils'
 
 export default function ProductItem({ product }: { product: Product }) {
   return (
@@ -28,6 +30,12 @@ export default function ProductItem({ product }: { product: Product }) {
           <span className="text-2xl">${product.price}</span>
         </div>
       </div>
+      <AddToCart item={{
+                      ...convertDocToObj(product),
+                      qty: 0,
+                      color: '',
+                      size: '',
+                    }}/>
     </div>
   )
 }
