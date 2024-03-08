@@ -9,8 +9,8 @@ import Header from '@/components/header/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Next Amazona V2',
-  description: 'Modern ECommerce Website',
+  title: 'Demo Store',
+  description: 'Modern Demo Store Website',
 }
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
                 {children}
                 <footer className="footer footer-center p-4 bg-base-300 text-base-content">
                   <p>
-                    Copyright © 2023 - All right reserved by Next Amazona V2
+                    Copyright © 2024 - All right reserved by Matanel Vatkin
                   </p>
                 </footer>
               </div>
