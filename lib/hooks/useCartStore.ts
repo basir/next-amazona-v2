@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { round2 } from '../utils'
 import { OrderItem, ShippingAddress } from '../models/OrderModel'
 import { persist } from 'zustand/middleware'
+import toast from 'react-hot-toast'
 
 type Cart = {
   items: OrderItem[]
@@ -55,11 +56,16 @@ export default function useCartService() {
     shippingAddress,
     increase: (item: OrderItem) => {
       const exist = items.find((x) => x.slug === item.slug)
-      const updatedCartItems = exist
-        ? items.map((x) =>
-            x.slug === item.slug ? { ...exist, qty: exist.qty + 1 } : x
-          )
-        : [...items, { ...item, qty: 1 }]
+      let updatedCartItems 
+        if(exist){
+          updatedCartItems = items.map((x) =>
+          x.slug === item.slug ? { ...exist, qty: exist.qty + 1 } : x
+        )
+        }
+        else{
+          updatedCartItems = [...items, { ...item, qty: 1 }]
+          toast('the product has been added to cart')
+        }
       const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
         calcPrice(updatedCartItems)
       cartStore.setState({
@@ -73,10 +79,14 @@ export default function useCartService() {
     decrease: (item: OrderItem) => {
       const exist = items.find((x) => x.slug === item.slug)
       if (!exist) return
-      const updatedCartItems =
-        exist.qty === 1
-          ? items.filter((x: OrderItem) => x.slug !== item.slug)
-          : items.map((x) => (item.slug ? { ...exist, qty: exist.qty - 1 } : x))
+      let updatedCartItems 
+      if(exist.qty === 1){
+        updatedCartItems = items.filter((x: OrderItem) => x.slug !== item.slug)
+        toast('the product has been removed from the cart')
+      }
+      else{
+        updatedCartItems = items.map((x) => (item.slug ? { ...exist, qty: exist.qty - 1 } : x))
+      }
       const { itemsPrice, shippingPrice, taxPrice, totalPrice } =
         calcPrice(updatedCartItems)
       cartStore.setState({
